@@ -77,7 +77,7 @@
                 <span id="soundLabel">소리 ON</span>
             </button>
 
-            <!-- 설정 모달 오픈 버튼 -->
+            <!-- 설정 버튼 -->
             <button id="settingsOpenBtn" type="button"
                 class="flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-medium border border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800 transition-all">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -261,12 +261,12 @@
         </div>
     </footer>
 
-    <!-- ==================== 4. 상세 설정 모달 (격자, 날짜, 장소, 필터 이름 HUD 등) ==================== -->
+    <!-- ==================== 4. 상세 설정 모달 (모바일 터치 완벽 호환) ==================== -->
     <div id="settingsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto no-scrollbar">
             <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
                 <h3 class="text-sm font-bold text-white">카메라 상세 설정</h3>
-                <button id="settingsCloseBtn" type="button" class="p-1 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white">
+                <button id="settingsCloseBtn" type="button" class="p-2 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -274,51 +274,51 @@
             </div>
 
             <div class="space-y-4 text-xs">
-                <!-- 뷰파인더 가이드 토글 -->
+                <!-- 뷰파인더 가이드 토글 (클릭 영역 확장) -->
                 <div class="space-y-2">
                     <div class="font-semibold text-zinc-400">뷰파인더 화면 오버레이</div>
                     <div class="grid grid-cols-2 gap-2">
-                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
+                        <div id="rowGrid" class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
                             <span class="text-zinc-200">3x3 격자선</span>
-                            <input type="checkbox" id="settingGrid" class="w-4 h-4 accent-white rounded">
-                        </label>
-                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
+                            <input type="checkbox" id="settingGrid" class="w-4 h-4 accent-white rounded pointer-events-none">
+                        </div>
+                        <div id="rowHud" class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
                             <span class="text-zinc-200">필터·앱 이름(HUD)</span>
-                            <input type="checkbox" id="settingHud" class="w-4 h-4 accent-white rounded">
-                        </label>
-                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer col-span-2">
+                            <input type="checkbox" id="settingHud" class="w-4 h-4 accent-white rounded pointer-events-none">
+                        </div>
+                        <div id="rowVignette" class="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer col-span-2">
                             <span class="text-zinc-200">비네트(가장자리 음영) 효과</span>
-                            <input type="checkbox" id="settingVignette" class="w-4 h-4 accent-white rounded">
-                        </label>
+                            <input type="checkbox" id="settingVignette" class="w-4 h-4 accent-white rounded pointer-events-none">
+                        </div>
                     </div>
                 </div>
 
                 <!-- 날짜 스탬프 설정 -->
                 <div class="space-y-2 pt-2 border-t border-zinc-800">
-                    <div class="flex items-center justify-between">
+                    <div id="rowDateStamp" class="flex items-center justify-between p-2 cursor-pointer">
                         <span class="font-semibold text-zinc-400">날짜 스탬프 표시</span>
-                        <input type="checkbox" id="settingDateStamp" class="w-4 h-4 accent-white rounded">
+                        <input type="checkbox" id="settingDateStamp" class="w-4 h-4 accent-white rounded pointer-events-none">
                     </div>
                     <div class="flex items-center gap-2">
-                        <select id="dateModeSelect" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-300 flex-1">
+                        <select id="dateModeSelect" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-300 flex-1">
                             <option value="real">실제 오늘 날짜 사용</option>
                             <option value="custom">원하는 가상 날짜 직접 지정</option>
                         </select>
-                        <input type="text" id="customDateInput" placeholder="예: '04 11 15" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-300 w-28 text-center font-mono-hud">
+                        <input type="text" id="customDateInput" placeholder="예: '04 11 15" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-300 w-28 text-center font-mono-hud">
                     </div>
                 </div>
 
                 <!-- 장소 태그 설정 -->
                 <div class="space-y-2 pt-2 border-t border-zinc-800">
-                    <div class="flex items-center justify-between">
+                    <div id="rowLocation" class="flex items-center justify-between p-2 cursor-pointer">
                         <span class="font-semibold text-zinc-400">장소 태그 (Location)</span>
-                        <input type="checkbox" id="settingLocationOn" class="w-4 h-4 accent-white rounded">
+                        <input type="checkbox" id="settingLocationOn" class="w-4 h-4 accent-white rounded pointer-events-none">
                     </div>
                     <input type="text" id="customLocationInput" placeholder="예: SEOUL, TOKYO, PARIS" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-200 font-mono-hud uppercase">
                 </div>
             </div>
 
-            <button id="settingsSaveBtn" type="button" class="w-full py-2.5 rounded-xl bg-white text-black font-bold text-xs transition-colors hover:bg-zinc-200 mt-2">
+            <button id="settingsSaveBtn" type="button" class="w-full py-3 rounded-xl bg-white text-black font-bold text-xs transition-colors hover:bg-zinc-200 mt-2">
                 설정 저장 및 적용
             </button>
         </div>
@@ -364,7 +364,7 @@
     <canvas id="photoCaptureCanvas" class="hidden"></canvas>
 
     <script>
-        // 총 30종 프리셋
+        // 30종 카메라 프리셋
         const CAMERA_PRESETS = [
             { id: 'cyber04', category: 'digital', sensor: 'CCD', name: "CYBER '04", sub: '소니 사이버샷 쿨톤', stampYear: '04', rgbGain: [0.95, 1.03, 1.14], shadowTint: [-6, 4, 18], highlightTint: [6, 4, -4], contrast: 1.14, saturation: 1.12, brightness: 3, grain: 0.04, vignette: 0.28 },
             { id: 'ixus40', category: 'digital', sensor: 'CCD', name: 'IXUS 40', sub: '캐논 익서스 웜톤', stampYear: '04', rgbGain: [1.09, 1.02, 0.89], shadowTint: [10, 4, -6], highlightTint: [14, 6, -10], contrast: 0.96, saturation: 1.10, brightness: 8, grain: 0.03, vignette: 0.24 },
@@ -409,7 +409,7 @@
             { mm: 135, zoom: 2.80, label: '135mm', tag: '망원' }
         ];
 
-        const savedSettings = JSON.parse(localStorage.getItem('minicam_settings_v3') || '{}');
+        const savedSettings = JSON.parse(localStorage.getItem('minicam_settings_v4') || '{}');
 
         const state = {
             stream: null,
@@ -503,7 +503,13 @@
             modalCamInfo: document.getElementById('modalCamInfo'),
             modalTimeInfo: document.getElementById('modalTimeInfo'),
             modalDownloadBtn: document.getElementById('modalDownloadBtn'),
-            modalDeleteBtn: document.getElementById('modalDeleteBtn')
+            modalDeleteBtn: document.getElementById('modalDeleteBtn'),
+            // 모달 행 요소들
+            rowGrid: document.getElementById('rowGrid'),
+            rowHud: document.getElementById('rowHud'),
+            rowVignette: document.getElementById('rowVignette'),
+            rowDateStamp: document.getElementById('rowDateStamp'),
+            rowLocation: document.getElementById('rowLocation')
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -537,7 +543,7 @@
                 presetId: state.activePreset.id,
                 focalMm: state.activeFocal.mm
             };
-            localStorage.setItem('minicam_settings_v3', JSON.stringify(settings));
+            localStorage.setItem('minicam_settings_v4', JSON.stringify(settings));
         }
 
         function applySettingsToUI() {
@@ -797,13 +803,12 @@
             el.liveDateStamp.style.display = state.dateStampEnabled ? 'block' : 'none';
         }
 
-        // 🌟 클래식 필터 카메라 "찰칵" 셔터 사운드
+        // 찰칵 셔터 사운드
         function playShutterSound() {
             if (!state.soundEnabled) return;
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // 1차 찰칵음 (높은 타격음)
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
                 osc1.type = 'square';
@@ -811,14 +816,13 @@
                 osc1.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.04);
                 
                 gain1.gain.setValueAtTime(0.35, ctx.currentTime);
-                gain1.gain.exponentialRampYToValue ? gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04) : gain1.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+                gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
                 
                 osc1.connect(gain1);
                 gain1.connect(ctx.destination);
                 osc1.start();
                 osc1.stop(ctx.currentTime + 0.04);
 
-                // 2차 묵직한 셔터막 닫히는 소리
                 setTimeout(() => {
                     const osc2 = ctx.createOscillator();
                     const gain2 = ctx.createGain();
@@ -850,6 +854,19 @@
 
             el.settingsOpenBtn.onclick = () => el.settingsModal.classList.remove('hidden');
             el.settingsCloseBtn.onclick = () => el.settingsModal.classList.add('hidden');
+
+            // 🌟 모바일 체크박스 터치 오류 완벽 해결 (행 전체 클릭 시 토글)
+            const bindCheckboxRow = (rowEl, checkboxEl, stateKey) => {
+                rowEl.onclick = () => {
+                    checkboxEl.checked = !checkboxEl.checked;
+                    state[stateKey] = checkboxEl.checked;
+                };
+            };
+            bindCheckboxRow(el.rowGrid, el.settingGrid, 'gridEnabled');
+            bindCheckboxRow(el.rowHud, el.settingHud, 'hudEnabled');
+            bindCheckboxRow(el.rowVignette, el.settingVignette, 'vignetteEnabled');
+            bindCheckboxRow(el.rowDateStamp, el.settingDateStamp, 'dateStampEnabled');
+            bindCheckboxRow(el.rowLocation, el.settingLocationOn, 'locationEnabled');
 
             el.settingsSaveBtn.onclick = () => {
                 state.gridEnabled = el.settingGrid.checked;
@@ -953,6 +970,7 @@
                 pCtx.fillRect(0, 0, sw, sh);
             }
 
+            // 🌟 날짜 스탬프 합성
             if (state.dateStampEnabled) {
                 const fontSize = Math.max(16, Math.round(Math.min(sw, sh) * 0.036));
                 pCtx.font = `bold ${fontSize}px 'Orbitron', monospace`;
@@ -963,6 +981,7 @@
                 pCtx.fillText(el.liveDateStamp.textContent, sw - fontSize, sh - fontSize * 0.9);
             }
 
+            // 🌟 장소 태그 합성
             if (state.locationEnabled && state.locationText) {
                 const fontSize = Math.max(16, Math.round(Math.min(sw, sh) * 0.036));
                 pCtx.font = `bold ${fontSize}px 'JetBrains Mono', monospace`;
@@ -971,6 +990,17 @@
                 pCtx.shadowBlur = 6;
                 pCtx.textAlign = 'left';
                 pCtx.fillText(`📍 ${state.locationText}`, fontSize, sh - fontSize * 0.9);
+            }
+
+            // 🌟 필터(카메라 기종) 이름 HUD 합성 (설정되어 있을 때)
+            if (state.hudEnabled) {
+                const fontSize = Math.max(14, Math.round(Math.min(sw, sh) * 0.03));
+                pCtx.font = `bold ${fontSize}px 'JetBrains Mono', monospace`;
+                pCtx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+                pCtx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+                pCtx.shadowBlur = 6;
+                pCtx.textAlign = 'left';
+                pCtx.fillText(`${state.activePreset.name} | ${state.activeFocal.label}`, fontSize, fontSize * 1.5);
             }
 
             const dataUrl = el.photoCaptureCanvas.toDataURL('image/jpeg', 0.95);
@@ -1093,7 +1123,6 @@
             }
         }
 
-        // 🌟 갤러리 모달 열기 오류 방어 및 안전 바인딩
         function openGallery(idx) {
             if (!state.mediaItems || state.mediaItems.length === 0) return;
             const safeIdx = Math.max(0, Math.min(idx, state.mediaItems.length - 1));
