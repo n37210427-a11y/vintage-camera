@@ -77,7 +77,7 @@
                 <span id="soundLabel">소리 ON</span>
             </button>
 
-            <!-- 통합 설정 버튼 -->
+            <!-- 설정 모달 오픈 버튼 -->
             <button id="settingsOpenBtn" type="button"
                 class="flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-medium border border-zinc-700 bg-zinc-900 text-zinc-200 hover:bg-zinc-800 transition-all">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -107,7 +107,7 @@
     <!-- ==================== 2. 중앙 뷰파인더 & 비율 선택 & 초점거리 ==================== -->
     <main class="flex-1 w-full max-w-2xl mx-auto px-4 flex flex-col items-center justify-center min-h-0 gap-2 overflow-hidden">
         
-        <!-- 화면 비율 선택 탭 (옛날 카메라 & 스마트폰 비율) -->
+        <!-- 화면 비율 선택 탭 -->
         <div class="flex items-center gap-1 bg-zinc-900 p-0.5 rounded-lg border border-zinc-800 shrink-0">
             <button type="button" data-ratio="3:4" class="ratio-btn px-2.5 py-0.5 rounded text-[11px] font-bold bg-white text-black transition-colors">3:4</button>
             <button type="button" data-ratio="1:1" class="ratio-btn px-2.5 py-0.5 rounded text-[11px] font-bold text-zinc-400 hover:text-white transition-colors">1:1</button>
@@ -138,14 +138,7 @@
                     <div></div>
                 </div>
 
-                <!-- 수평계 오버레이 -->
-                <div id="levelerOverlay" class="hidden pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center z-10">
-                    <div class="w-24 h-[1px] bg-white/40 relative flex items-center justify-center">
-                        <div class="w-2 h-2 rounded-full border border-white bg-emerald-400/80 shadow-md"></div>
-                    </div>
-                </div>
-
-                <!-- HUD (앱 이름, 필터명, 장소) -->
+                <!-- HUD 상단 (필터 이름, 기종, 장소) -->
                 <div id="hudTopContainer" class="pointer-events-none absolute top-3 left-3 right-3 flex items-center justify-between font-mono-hud text-[11px] z-10">
                     <div class="flex items-center gap-2 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/15">
                         <span id="hudCamCode" class="text-white font-bold">CYBER '04</span>
@@ -238,7 +231,7 @@
             </button>
         </div>
 
-        <!-- 하단 셔터 및 갤러리 -->
+        <!-- 하단 셔터 및 갤러리 버튼 -->
         <div class="flex items-center justify-between pt-1 px-2 sm:px-6">
             <div class="flex items-center bg-zinc-900 p-1 rounded-full border border-zinc-800">
                 <button id="modePhotoBtn" type="button" class="px-3.5 py-1 rounded-full text-xs font-bold transition-all bg-white text-black">
@@ -268,7 +261,7 @@
         </div>
     </footer>
 
-    <!-- ==================== 4. 상세 설정 모달 (격자, 수평계, 날짜, 장소, 필터 이름 등) ==================== -->
+    <!-- ==================== 4. 상세 설정 모달 (격자, 날짜, 장소, 필터 이름 HUD 등) ==================== -->
     <div id="settingsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto no-scrollbar">
             <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
@@ -290,15 +283,11 @@
                             <input type="checkbox" id="settingGrid" class="w-4 h-4 accent-white rounded">
                         </label>
                         <label class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
-                            <span class="text-zinc-200">수평계 표시</span>
-                            <input type="checkbox" id="settingLeveler" class="w-4 h-4 accent-white rounded">
-                        </label>
-                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
                             <span class="text-zinc-200">필터·앱 이름(HUD)</span>
                             <input type="checkbox" id="settingHud" class="w-4 h-4 accent-white rounded">
                         </label>
-                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer">
-                            <span class="text-zinc-200">비네트 효과</span>
+                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-zinc-950 border border-zinc-800 cursor-pointer col-span-2">
+                            <span class="text-zinc-200">비네트(가장자리 음영) 효과</span>
                             <input type="checkbox" id="settingVignette" class="w-4 h-4 accent-white rounded">
                         </label>
                     </div>
@@ -375,9 +364,8 @@
     <canvas id="photoCaptureCanvas" class="hidden"></canvas>
 
     <script>
-        // 🌟 총 30종의 확장된 필터 프리셋 (옛날 디카 15종 + 필름 카메라 15종)
+        // 총 30종 프리셋
         const CAMERA_PRESETS = [
-            // --- 디카 15종 ---
             { id: 'cyber04', category: 'digital', sensor: 'CCD', name: "CYBER '04", sub: '소니 사이버샷 쿨톤', stampYear: '04', rgbGain: [0.95, 1.03, 1.14], shadowTint: [-6, 4, 18], highlightTint: [6, 4, -4], contrast: 1.14, saturation: 1.12, brightness: 3, grain: 0.04, vignette: 0.28 },
             { id: 'ixus40', category: 'digital', sensor: 'CCD', name: 'IXUS 40', sub: '캐논 익서스 웜톤', stampYear: '04', rgbGain: [1.09, 1.02, 0.89], shadowTint: [10, 4, -6], highlightTint: [14, 6, -10], contrast: 0.96, saturation: 1.10, brightness: 8, grain: 0.03, vignette: 0.24 },
             { id: 'coolpix02', category: 'digital', sensor: 'CCD', name: "COOLPIX '02", sub: '니콘 2002 빈티지', stampYear: '02', rgbGain: [0.98, 1.06, 0.93], shadowTint: [-4, 10, -2], highlightTint: [8, 8, -8], contrast: 1.12, saturation: 0.92, brightness: 2, grain: 0.05, vignette: 0.30 },
@@ -394,7 +382,6 @@
             { id: 'panasoniclz', category: 'digital', sensor: 'CCD', name: 'LUMIX LZ', sub: '초창기 루믹스 감성', stampYear: '04', rgbGain: [0.99, 1.05, 1.01], shadowTint: [0, 8, 6], highlightTint: [8, 8, 4], contrast: 1.05, saturation: 1.12, brightness: 5, grain: 0.03, vignette: 0.22 },
             { id: 'canonA510', category: 'digital', sensor: 'CCD', name: 'POWERSHOT', sub: '캐논 파워샷 토니', stampYear: '05', rgbGain: [1.08, 1.02, 0.91], shadowTint: [10, 6, -8], highlightTint: [14, 8, -12], contrast: 1.02, saturation: 1.15, brightness: 6, grain: 0.04, vignette: 0.25 },
 
-            // --- 필름 카메라 15종 ---
             { id: 'gold200', category: 'film', sensor: '35MM', name: 'GOLD 200', sub: '코닥 골드 황금빛', stampYear: '98', rgbGain: [1.11, 1.03, 0.85], shadowTint: [12, 6, -8], highlightTint: [18, 10, -14], contrast: 1.06, saturation: 1.24, brightness: 4, grain: 0.06, vignette: 0.28 },
             { id: 'portra400', category: 'film', sensor: '35MM', name: 'PORTRA 400', sub: '포트라 인물 파스텔', stampYear: '99', rgbGain: [1.06, 1.02, 0.94], shadowTint: [10, 8, 6], highlightTint: [12, 8, -4], contrast: 0.92, saturation: 1.05, brightness: 7, grain: 0.05, vignette: 0.20 },
             { id: 'superia400', category: 'film', sensor: '35MM', name: 'SUPERIA 400', sub: '후지 수페리아 그린', stampYear: '00', rgbGain: [0.96, 1.06, 0.99], shadowTint: [-6, 14, 6], highlightTint: [10, 2, 8], contrast: 1.08, saturation: 1.16, brightness: 3, grain: 0.06, vignette: 0.26 },
@@ -422,8 +409,7 @@
             { mm: 135, zoom: 2.80, label: '135mm', tag: '망원' }
         ];
 
-        // 🌟 로컬 스토리지 설정 로드
-        const savedSettings = JSON.parse(localStorage.getItem('minicam_settings_v2') || '{}');
+        const savedSettings = JSON.parse(localStorage.getItem('minicam_settings_v3') || '{}');
 
         const state = {
             stream: null,
@@ -431,7 +417,6 @@
             soundEnabled: savedSettings.soundEnabled ?? true,
             autoSaveEnabled: savedSettings.autoSaveEnabled ?? true,
             gridEnabled: savedSettings.gridEnabled ?? false,
-            levelerEnabled: savedSettings.levelerEnabled ?? false,
             hudEnabled: savedSettings.hudEnabled ?? true,
             vignetteEnabled: savedSettings.vignetteEnabled ?? true,
             dateStampEnabled: savedSettings.dateStampEnabled ?? true,
@@ -463,7 +448,6 @@
             photoCaptureCanvas: document.getElementById('photoCaptureCanvas'),
             vignetteOverlay: document.getElementById('vignetteOverlay'),
             gridOverlay: document.getElementById('gridOverlay'),
-            levelerOverlay: document.getElementById('levelerOverlay'),
             hudTopContainer: document.getElementById('hudTopContainer'),
             hudCamCode: document.getElementById('hudCamCode'),
             hudFocalLength: document.getElementById('hudFocalLength'),
@@ -484,7 +468,6 @@
             settingsCloseBtn: document.getElementById('settingsCloseBtn'),
             settingsModal: document.getElementById('settingsModal'),
             settingGrid: document.getElementById('settingGrid'),
-            settingLeveler: document.getElementById('settingLeveler'),
             settingHud: document.getElementById('settingHud'),
             settingVignette: document.getElementById('settingVignette'),
             settingDateStamp: document.getElementById('settingDateStamp'),
@@ -542,7 +525,6 @@
                 soundEnabled: state.soundEnabled,
                 autoSaveEnabled: state.autoSaveEnabled,
                 gridEnabled: state.gridEnabled,
-                levelerEnabled: state.levelerEnabled,
                 hudEnabled: state.hudEnabled,
                 vignetteEnabled: state.vignetteEnabled,
                 dateStampEnabled: state.dateStampEnabled,
@@ -555,7 +537,7 @@
                 presetId: state.activePreset.id,
                 focalMm: state.activeFocal.mm
             };
-            localStorage.setItem('minicam_settings_v2', JSON.stringify(settings));
+            localStorage.setItem('minicam_settings_v3', JSON.stringify(settings));
         }
 
         function applySettingsToUI() {
@@ -569,7 +551,6 @@
             el.autoSaveDot.className = `w-1.5 h-1.5 rounded-full ${state.autoSaveEnabled ? 'bg-zinc-950' : 'bg-zinc-500'}`;
 
             el.gridOverlay.classList.toggle('hidden', !state.gridEnabled);
-            el.levelerOverlay.classList.toggle('hidden', !state.levelerEnabled);
             el.hudTopContainer.classList.toggle('hidden', !state.hudEnabled);
 
             if (state.locationEnabled && state.locationText) {
@@ -582,9 +563,7 @@
             el.hudCamCode.textContent = state.activePreset.name;
             el.hudFocalLength.textContent = state.activeFocal.label;
 
-            // 모달 내부 폼 반영
             el.settingGrid.checked = state.gridEnabled;
-            el.settingLeveler.checked = state.levelerEnabled;
             el.settingHud.checked = state.hudEnabled;
             el.settingVignette.checked = state.vignetteEnabled;
             el.settingDateStamp.checked = state.dateStampEnabled;
@@ -726,7 +705,6 @@
                     updateLiveDateStamp();
                     saveSettingsToLocalStorage();
                     el.hudCamCode.textContent = cam.name;
-                    el.hudSensorTag.textContent = `${cam.sensor} · F2.8`;
                     buildCameraCarousel();
                 };
                 el.cameraCarousel.appendChild(card);
@@ -819,26 +797,43 @@
             el.liveDateStamp.style.display = state.dateStampEnabled ? 'block' : 'none';
         }
 
-        // 🌟 아날로그 고급 셔터 사운드
+        // 🌟 클래식 필터 카메라 "찰칵" 셔터 사운드
         function playShutterSound() {
             if (!state.soundEnabled) return;
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // 기계식 찰칵 소리 (오실레이터 노이즈 조합)
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(650, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 0.09);
+                // 1차 찰칵음 (높은 타격음)
+                const osc1 = ctx.createOscillator();
+                const gain1 = ctx.createGain();
+                osc1.type = 'square';
+                osc1.frequency.setValueAtTime(1200, ctx.currentTime);
+                osc1.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.04);
                 
-                gain.gain.setValueAtTime(0.4, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
+                gain1.gain.setValueAtTime(0.35, ctx.currentTime);
+                gain1.gain.exponentialRampYToValue ? gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04) : gain1.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.04);
                 
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start();
-                osc.stop(ctx.currentTime + 0.09);
+                osc1.connect(gain1);
+                gain1.connect(ctx.destination);
+                osc1.start();
+                osc1.stop(ctx.currentTime + 0.04);
+
+                // 2차 묵직한 셔터막 닫히는 소리
+                setTimeout(() => {
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(320, ctx.currentTime);
+                    osc2.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.06);
+                    
+                    gain2.gain.setValueAtTime(0.4, ctx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+                    
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.start();
+                    osc2.stop(ctx.currentTime + 0.06);
+                }, 40);
             } catch (e) {}
         }
 
@@ -858,7 +853,6 @@
 
             el.settingsSaveBtn.onclick = () => {
                 state.gridEnabled = el.settingGrid.checked;
-                state.levelerEnabled = el.settingLeveler.checked;
                 state.hudEnabled = el.settingHud.checked;
                 state.vignetteEnabled = el.settingVignette.checked;
                 state.dateStampEnabled = el.settingDateStamp.checked;
@@ -969,7 +963,6 @@
                 pCtx.fillText(el.liveDateStamp.textContent, sw - fontSize, sh - fontSize * 0.9);
             }
 
-            // 사진에 장소 태그 합성
             if (state.locationEnabled && state.locationText) {
                 const fontSize = Math.max(16, Math.round(Math.min(sw, sh) * 0.036));
                 pCtx.font = `bold ${fontSize}px 'JetBrains Mono', monospace`;
@@ -1100,12 +1093,14 @@
             }
         }
 
+        // 🌟 갤러리 모달 열기 오류 방어 및 안전 바인딩
         function openGallery(idx) {
-            if (state.mediaItems.length === 0) return;
-            state.currentModalIndex = idx;
-            const item = state.mediaItems[idx];
+            if (!state.mediaItems || state.mediaItems.length === 0) return;
+            const safeIdx = Math.max(0, Math.min(idx, state.mediaItems.length - 1));
+            state.currentModalIndex = safeIdx;
+            const item = state.mediaItems[safeIdx];
 
-            el.modalCounter.textContent = `${idx + 1} / ${state.mediaItems.length}`;
+            el.modalCounter.textContent = `${safeIdx + 1} / ${state.mediaItems.length}`;
             el.modalCamInfo.textContent = `${item.camName} · ${item.focalLabel}`;
             el.modalTimeInfo.textContent = item.timestamp;
 
@@ -1116,25 +1111,25 @@
                 el.modalVideoView.pause();
             } else {
                 el.modalVideoView.src = item.url;
-                el.modalVideoView.classList.add('hidden');
-                el.modalPhotoView.classList.remove('hidden');
+                el.modalVideoView.classList.remove('hidden');
+                el.modalPhotoView.classList.add('hidden');
             }
 
             el.modalDownloadBtn.onclick = () => triggerInstantDownload(item.url, item.filename);
             el.modalDeleteBtn.onclick = () => {
-                state.mediaItems.splice(idx, 1);
+                state.mediaItems.splice(safeIdx, 1);
                 updateGalleryThumb();
                 if (state.mediaItems.length === 0) {
                     el.galleryModal.classList.add('hidden');
                 } else {
-                    openGallery(Math.max(0, idx - 1));
+                    openGallery(Math.max(0, safeIdx - 1));
                 }
             };
 
-            el.modalPrevBtn.onclick = () => openGallery((idx - 1 + state.mediaItems.length) % state.mediaItems.length);
-            el.modalNextBtn.onclick = () => openGallery((idx + 1) % state.mediaItems.length);
+            el.modalPrevBtn.onclick = () => openGallery((safeIdx - 1 + state.mediaItems.length) % state.mediaItems.length);
+            el.modalNextBtn.onclick = () => openGallery((safeIdx + 1) % state.mediaItems.length);
 
-            el.galleryModal.classList.add('hidden');
+            el.galleryModal.classList.remove('hidden');
         }
 
         function showToast(msg) {
